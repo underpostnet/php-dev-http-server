@@ -13,12 +13,15 @@ include './underpost-modules/logger.php';
 
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-// logger($_SERVER, true);
-// logger($_SERVER);
+
+
+// $logger->log($_SERVER, true);
+// $logger->log($_SERVER);
 
 // https://www.php.net/manual/en/reserved.variables.php
+// get_class_methods()
 
-logger(' ON REQUEST -> '.$path);
+$logger->log(' ON REQUEST -> '.$path);
 
 switch ($path) {
   case '/':

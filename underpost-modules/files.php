@@ -27,7 +27,7 @@ function rrmdir($dir) {
 
 
  copy recursiuve
- 
+
  $source = "dir/dir/dir";
 $dest= "dest/dir";
 
@@ -83,5 +83,32 @@ function recursiveIteratorDirectory($ruta){
 
 */
 
+if(!class_exists('logger')){ include 'c:/dd/php-dev-http-server/underpost-modules/logger.php'; }
+
+class files {
+  function recursiveIteratorDirectory($path, $paths = []){
+    global $logger;
+    if (is_dir($path)) {
+      if ($dh = opendir($path)) {
+        while (($file = readdir($dh)) !== false) {
+          $new_path = $path . '/' . $file;
+          if (is_dir($new_path) && $file!='.' && $file!='..'){
+              $paths = array_merge($paths, $this->recursiveIteratorDirectory($new_path, $paths));
+          }else{
+            if($file!='.' && $file!='..'){
+              array_push($paths, $new_path);
+            }
+          }
+        }
+        closedir($dh);
+      }
+    }else{
+      $logger->log(' Directory not found ');
+    }
+    return array_unique($paths);
+  }
+}
+
+$files = new files();
 
  ?>
