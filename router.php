@@ -16,6 +16,8 @@ $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 // logger($_SERVER, true);
 // logger($_SERVER);
 
+// https://www.php.net/manual/en/reserved.variables.php
+
 logger(' ON REQUEST -> '.$path);
 
 switch ($path) {
