@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 include './underpost-modules/logger.php';
+include './underpost-modules/views.php';
 
 /*
 
@@ -11,9 +12,9 @@ include './underpost-modules/logger.php';
 
 */
 
+$dataEnv = json_decode(file_get_contents('./data/env.json'));
+$dataRender = json_decode(file_get_contents('./data/render.json'));
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-
-
 
 // $logger->log($_SERVER, true);
 // $logger->log($_SERVER);
@@ -24,17 +25,15 @@ $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $logger->log(' ON REQUEST -> '.$path);
 
 switch ($path) {
-  case '/':
+  case '/test':
+    header('Content-Type: '.$views->buildMymeType().'; charset='.$dataRender->charset);
     echo 'Hello World';
     break;
-  case '/info':
-    echo '<pre>';
-    var_dump($_SERVER);
-    echo '</pre>';
-    break;
   default:
-    echo 'default path -> '.$path;
-    break;
+    ( $dataEnv->dev ) ? $views->renderInfo($dataRender, $path) : null;
+    $views->renderViews($dataRender, $path);
+    $views->renderStatic($dataRender, $path);
+    $views->renderError($dataRender, 404);
 }
 
 
