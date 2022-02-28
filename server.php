@@ -19,6 +19,7 @@ exec('git pull origin master');
 exec('npx kill-port '.$dataEnv->httpServer->port);
 
 // init server with router
+// $dataEnv->startConsole
 exec('php -S localhost:'.$dataEnv->httpServer->port.' '.$dataEnv->httpServer->router.' -c ./php.ini');
 // exec('php -S localhost:8000 -t ./static -c ./php.ini');
 

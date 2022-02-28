@@ -22,7 +22,7 @@ $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 // https://www.php.net/manual/en/reserved.variables.php
 // get_class_methods()
 
-$logger->log(' ON REQUEST -> '.$path);
+$logger->yellowOverRed(' ON REQUEST -> '.$path);
 
 switch ($path) {
   case '/test':
