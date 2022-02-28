@@ -7,6 +7,12 @@
 - PHP utilities modules
 
 
+### Install/Update dependencies:
+
+
+` composer update `
+
+
 ### Usage:
 
 
