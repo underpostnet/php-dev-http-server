@@ -64,8 +64,17 @@ class views  {
   }
 
   function renderViews($dataRender, $dataEnv, $path){
+    global $logger;
     foreach ($dataRender->views as $viewData) {
       if($viewData->uri === $path){
+
+        // iniciar session si no tiene libros cargar data en session por defecto
+        session_start();
+        if(!isset($_SESSION['books'])){
+          $_SESSION['books'] = file_get_contents('./data/books.json');
+          $logger->color("cyan", "info -> seteo nuevo carro");
+        }
+
         header('Content-Type: '.$this->buildMymeType().'; charset='.$dataRender->charset);
         exit("
 
@@ -97,6 +106,11 @@ class views  {
               -->
               <script src='/underpost-library/util.js'></script>
               <script src='/underpost-library/vanilla.js'></script>
+              <script>
+                var books = JSON.parse(`".$_SESSION['books']."`);
+                console.log('books ->');
+                console.log(books);
+              </script>
               <script type='module' src='/views/".$viewData->render."'></script>
           </head>
           <body>
