@@ -16,13 +16,15 @@ $dataEnv = json_decode(file_get_contents('./data/env.json'));
 $dataRender = json_decode(file_get_contents('./data/render.json'));
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
+date_default_timezone_set($dataEnv->timezone);
+
 // $logger->log($_SERVER, true);
 // $logger->log($_SERVER);
 
 // https://www.php.net/manual/en/reserved.variables.php
 // get_class_methods()
 
-$logger->yellowOverRed(' ON REQUEST -> '.$path);
+$logger->color('white-green',' ON REQUEST -> '.$path);
 
 switch ($path) {
   case '/test':
