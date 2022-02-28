@@ -16,6 +16,10 @@ class views  {
         return 'application/javascript';
       case 'css':
         return 'text/css';
+      case 'png':
+        return 'image/png';
+      case 'jpg':
+        return 'image/jpg';
       default:
         return 'text/html';
     }
@@ -54,11 +58,57 @@ class views  {
     exit(' Error '.$status);
   }
 
-  function renderViews($dataRender){
 
-    // foreach ($dataRender->$views as $viewData) {
-    //
-    // }
+  function buildUrl($dataEnv, $uri){
+    return $dataEnv->httpServer->host.':'.$dataEnv->httpServer->port.$uri;
+  }
+
+  function renderViews($dataRender, $dataEnv, $path){
+    foreach ($dataRender->views as $viewData) {
+      if($viewData->uri === $path){
+        header('Content-Type: '.$this->buildMymeType().'; charset='.$dataRender->charset);
+        exit("
+
+        <!DOCTYPE html>
+        <html dir='".$viewData->dir."' lang='".$viewData->lang."'>
+          <head>
+              <meta charset='".$dataRender->charset."'>
+              <!-- json-ld -->
+              <title>".$viewData->title."</title>
+              <link rel='canonical' href=".$this->buildUrl($dataEnv, $viewData->uri)."'>
+              <link rel='icon' type='image/png' href='".$this->buildUrl($dataEnv, $viewData->favicon)."'>
+              <meta name ='title' content='".$viewData->title."'>
+              <meta name ='description' content='".$viewData->description."'>
+              <meta name='author' content='".$dataEnv->author."'>
+              <meta property='og:title' content='".$viewData->title."'>
+              <meta property='og:description' content='".$viewData->description."'>
+              <meta property='og:image' content='".$this->buildUrl($dataEnv, $viewData->image)."'>
+              <meta property='og:url' content='".$this->buildUrl($dataEnv, $viewData->uri)."'>
+              <meta name='twitter:card' content='summary_large_image'>
+              <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, user-scalable=0'>
+              <meta name='viewport' content='width=device-width, user-scalable=no'>
+              <!-- font awesome
+              <link rel='stylesheet' href='/underpost-library/css/all.min.css'>
+              -->
+              <link rel='stylesheet' href='/underpost-library/style/simple.css'>
+              <link rel='stylesheet' href='/underpost-library/style/place-bar-select.css'>
+              <!--
+              <link rel='stylesheet' href='/underpost-library/fonts.css'>
+              -->
+              <script src='/underpost-library/util.js'></script>
+              <script src='/underpost-library/vanilla.js'></script>
+              <script type='module' src='/views/".$viewData->render."'></script>
+          </head>
+          <body>
+            <div style='display: none;'>
+              <h1>".$viewData->title."</h1> <h2>".$viewData->description."</h2>
+            </div>
+          </body>
+      </html>
+
+        ");
+      }
+    }
 
 
   }

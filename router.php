@@ -33,8 +33,9 @@ switch ($path) {
     break;
   default:
     ( $dataEnv->dev ) ? $views->renderInfo($dataRender, $path) : null;
-    $views->renderViews($dataRender, $path);
+    $views->renderViews($dataRender, $dataEnv, $path);
     $views->renderStatic($dataRender, $path);
+    $logger->color('white-red',' ERROR REQUEST -> '.$path);
     $views->renderError($dataRender, 404);
 }
 

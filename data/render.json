@@ -13,7 +13,8 @@
       }
    ],
    "statics":[
-      "./underpost-library"
+      "./underpost-library",
+      "./views"
    ],
    "views":[
       {
@@ -22,11 +23,9 @@
          "uri":"/",
          "title":"underpost.net",
          "description":"underpost interface",
-         "image":"/img/underpost-social.jpg",
-         "favicon":"/img/underpost.png",
-         "render": "shop.js",
-         "pathModules": "./underpost-library/mods/",
-         "modules": ["base.js", "rest.js"]
+         "image":"/underpost-library/img/underpost-social.jpg",
+         "favicon":"/underpost-library/img/underpost.png",
+         "render": "shop.js"
       }
    ]
 }
