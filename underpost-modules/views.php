@@ -72,7 +72,7 @@ class views  {
         session_start();
         if(!isset($_SESSION['books'])){
           $_SESSION['books'] = file_get_contents('./data/books.json');
-          $logger->color("cyan", "info -> seteo nuevo carro");
+          $logger->color("white-cyan", "GET ".$viewData->uri." -> SET NEW SHOP DATA");
         }
 
         header('Content-Type: '.$this->buildMymeType().'; charset='.$dataRender->charset);

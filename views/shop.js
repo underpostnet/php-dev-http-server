@@ -132,33 +132,33 @@ class Shop {
 
       `);
 
-
+      let init = true;
       let total = 0;
       const renderBooks = () =>  {
         htmls('form', '');
-        books.map( (movie, index, array) => {
+        books.map( (book, index, array) => {
 
            append('form', `
 
                <div class='in' style='border: 2px solid gray; width: 300px; margin: 5px;'>
 
-                     Nombre Pelicula: `+movie.title+`
+                     Nombre Libro: `+book.title+`
                      <br>
-                     Precio: `+movie.amount+`
+                     Precio: `+book.amount+`
                      <br>
 
                      <div class='inl btn-add-`+index+` btn-hover'
-                     style='background: green; color: white; `+(movie.buy?`display: none;`:'')+`'>
+                     style='background: green; color: white; `+(book.buy?`display: none;`:'')+`'>
                          Agregar al carro
                      </div>
 
                      <div class='inl card-info-`+index+` btn-hover'
-                     style='background: yellow; color: black; `+(movie.buy?'':`display: none;`)+`'>
+                     style='background: yellow; color: black; `+(book.buy?'':`display: none;`)+`'>
                          Producto agregado
                      </div>
 
                      <div class='inl btn-del-`+index+` btn-hover'
-                     style='background: red; color: white; `+(movie.buy?'':`display: none;`)+` padding: 5px;'>
+                     style='background: red; color: white; `+(book.buy?'':`display: none;`)+` padding: 5px;'>
                          Eliminar del carro
                      </div>
 
@@ -166,16 +166,38 @@ class Shop {
 
            `);
 
-                    s('.btn-add-'+index).onclick = () => {
+                    s('.btn-add-'+index).onclick = async () => {
                       books[index].buy = true;
-                      total += movie.amount;
+                      total += book.amount;
+
+                      const requestResponse = await new Rest().FETCH(
+                        '/update-shop',
+                        'post',
+                        JSON.stringify(books)
+                      );
+
+                      console.log(requestResponse);
+
                       renderBooks();
                     };
-                    s('.btn-del-'+index).onclick = () => {
+                    s('.btn-del-'+index).onclick = async () => {
                       books[index].buy = false;
-                      total -= movie.amount;
+
+                      const requestResponse = await new Rest().FETCH(
+                        '/update-shop',
+                        'post',
+                        JSON.stringify(books)
+                      );
+
+                      console.log(requestResponse);
+
+                      total -= book.amount;
                       renderBooks();
                     };
+
+                    if(book.buy === true && init === true){
+                      total += book.amount;
+                    }
          });
 
          append('form', `
@@ -204,15 +226,19 @@ class Shop {
 
          const resetShop = () => {
            total = 0;
-           books = books.map( movie => {
-             movie.buy = false;
-             return movie;
+           books = books.map( book => {
+             book.buy = false;
+             return book;
            });
            renderBooks();
          };
 
-         s('.clear-shop').onclick = () => {
+         s('.clear-shop').onclick = async () => {
            resetShop();
+           const requestResponse = await new Rest().FETCH(
+             '/destroy-session',
+             'get'
+           );
          }
 
          s('.buy-btn').onclick = () => {
@@ -222,7 +248,7 @@ class Shop {
       };
 
       renderBooks();
-
+      init = false;
       append('body', spr('<br>', 3));
 
 

@@ -31,6 +31,22 @@ switch ($path) {
     header('Content-Type: '.$views->buildMymeType().'; charset='.$dataRender->charset);
     echo 'Hello World';
     break;
+  case '/update-shop':
+    header('Content-Type: application/json; charset='.$dataRender->charset);
+    session_start();
+    if(isset($_SESSION['books'])){
+      $logger->color('white-cyan',' FETCH POST REQUEST -> '.$path);
+      $_SESSION['books'] = json_decode( file_get_contents( 'php://input' ), true );
+      exit('true');
+    }else{
+      exit('false');
+    }
+  case '/destroy-session':
+    header('Content-Type: application/json; charset='.$dataRender->charset);
+    $logger->color('white-cyan',' REST GET REQUEST -> '.$path);
+    session_start();
+    session_destroy();
+    exit('true');
   default:
     ( $dataEnv->dev ) ? $views->renderInfo($dataRender, $path) : null;
     $views->renderViews($dataRender, $dataEnv, $path);
