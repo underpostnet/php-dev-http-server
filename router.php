@@ -39,6 +39,8 @@ switch ($path) {
       $_SESSION['books'] = json_decode( file_get_contents( 'php://input' ), true );
       exit('true');
     }else{
+      $_SESSION['books'] = json_decode( file_get_contents( 'php://input' ), true );
+      $logger->color("white-cyan", "GET ".$path." -> SET NEW SHOP DATA");
       exit('false');
     }
   case '/destroy-session':
@@ -47,6 +49,29 @@ switch ($path) {
     session_start();
     session_destroy();
     exit('true');
+  case '/buy':
+    header('Content-Type: application/json; charset='.$dataRender->charset);
+    session_start();
+    if(isset($_SESSION['books'])){
+      $input = json_decode($_SESSION['books']);
+      $logger->color('white-cyan',' FETCH POST REQUEST -> '.$path);
+      $total = 0;
+      foreach ($input as $book) {
+        if($book->buy == true){
+          $total = $total + $book->amount;
+        }
+      }
+      if($total>0){
+        $logger->color('white-yellow',' COMPRA EXITOSA -> TOTAL $ CLP:'.$total);
+        session_destroy();
+        exit('true');
+      }else{
+        session_destroy();
+        exit('false');
+      }
+    }else{
+      exit('false');
+    }
   default:
     ( $dataEnv->dev ) ? $views->renderInfo($dataRender, $path) : null;
     $views->renderViews($dataRender, $dataEnv, $path);

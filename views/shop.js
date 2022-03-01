@@ -144,7 +144,7 @@ class Shop {
 
                      Nombre Libro: `+book.title+`
                      <br>
-                     Precio: `+book.amount+`
+                     Precio: CLP $ `+book.amount+`
                      <br>
 
                      <div class='inl btn-add-`+index+` btn-hover'
@@ -205,7 +205,7 @@ class Shop {
                <br>
                <div class='inl total' style='margin: 5px; background: white; color: green; padding: 20px; font-size: 24px;'>
 
-                   TOTAL: $`+total+`
+                   TOTAL: CLP $`+total+`
 
                </div>
                <div class='inl btn-hover clear-shop' style='background: pink; color: black; magin: 5px; padding: 5px;'>
@@ -239,9 +239,19 @@ class Shop {
              '/destroy-session',
              'get'
            );
+
+           console.log(requestResponse);
          }
 
-         s('.buy-btn').onclick = () => {
+         s('.buy-btn').onclick = async () => {
+
+           const requestResponse = await new Rest().FETCH(
+             '/buy',
+             'post'
+           );
+
+           console.log(requestResponse);
+
            resetShop();
          }
 
