@@ -57,12 +57,6 @@ class Shop {
     const sizeTitle = 15;
     const backgroundNotifi = 'rgba(0, 0, 0, 0.9)';
 
-    // return   notifi.display(
-    //    backgroundNotifi,
-    //    'Empty title',
-    //    2000,
-    //    'error'
-    //  );
 
     // se renderizar el formulario
     /*
@@ -249,6 +243,22 @@ class Shop {
              '/buy',
              'post'
            );
+
+           if(requestResponse===true){
+             notifi.display(
+              backgroundNotifi,
+              'Compra ejecutada',
+              2000,
+              'success'
+            );
+           }else{
+             notifi.display(
+              backgroundNotifi,
+              'Campos invalidos',
+              2000,
+              'error'
+            );
+           }
 
            console.log(requestResponse);
 

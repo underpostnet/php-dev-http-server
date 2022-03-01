@@ -16,7 +16,7 @@ if(!is_dir('./underpost-library')){
 exec('git pull origin master');
 
 // clean server port
-exec('npx kill-port '.$dataEnv->httpServer->port);
+// exec('npx kill-port '.$dataEnv->httpServer->port);
 
 // init server with router
 // $dataEnv->startConsole
