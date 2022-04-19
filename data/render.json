@@ -25,7 +25,7 @@
          "description":"underpost interface",
          "image":"/underpost-library/img/underpost-social.jpg",
          "favicon":"/underpost-library/img/underpost.png",
-         "render": "shop.js"
+         "render": "tarea.js"
       }
    ]
 }
