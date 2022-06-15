@@ -1,7 +1,4 @@
 
-import { Rest } from '../underpost-library/mods/rest.js';
-
-
 class Shop {
 
   constructor(){

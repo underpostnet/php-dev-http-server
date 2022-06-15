@@ -26,6 +26,23 @@ date_default_timezone_set($dataEnv->timezone);
 
 $logger->color('white-green',' ON REQUEST -> '.$path);
 
+$initScript = function ($uriView){
+        global $logger;
+        session_start();
+        if(!isset($_SESSION['books']) || $_SESSION['books']=="" ){
+          $_SESSION['books'] = file_get_contents('./data/books.json');
+          $logger->color("white-cyan", "GET ".$uriView." -> SET NEW SHOP DATA");
+        }
+
+        return "
+            <script>
+              var books = JSON.parse(`".$_SESSION['books']."`);
+              console.log('books ->');
+              console.log(books);
+            </script>
+        ";
+};
+
 switch ($path) {
   case '/test':
     header('Content-Type: '.$views->buildMymeType().'; charset='.$dataRender->charset);
@@ -74,7 +91,7 @@ switch ($path) {
     }
   default:
     ( $dataEnv->dev ) ? $views->renderInfo($dataRender, $path) : null;
-    $views->renderViews($dataRender, $dataEnv, $path);
+    $views->renderViews($dataRender, $dataEnv, $path, $initScript);
     $views->renderStatic($dataRender, $path);
     $logger->color('white-red',' ERROR REQUEST -> '.$path);
     $views->renderError($dataRender, 404);
