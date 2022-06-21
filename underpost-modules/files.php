@@ -86,6 +86,22 @@ function recursiveIteratorDirectory($ruta){
 if(!class_exists('logger')){ include 'c:/dd/php-dev-http-server/underpost-modules/logger.php'; }
 
 class files {
+
+  function recursiveDeleteDirectory($dir) {
+    if (is_dir($dir)) {
+      $objects = scandir($dir);
+      foreach ($objects as $object) {
+        if ($object != "." && $object != "..") {
+          if (is_dir($dir. DIRECTORY_SEPARATOR .$object) && !is_link($dir."/".$object))
+            $this->recursiveDeleteDirectory($dir. DIRECTORY_SEPARATOR .$object);
+          else
+            unlink($dir. DIRECTORY_SEPARATOR .$object);
+        }
+      }
+      rmdir($dir);
+    }
+  }
+  
   function recursiveIteratorDirectory($path, $paths = []){
     global $logger;
     if (is_dir($path)) {
