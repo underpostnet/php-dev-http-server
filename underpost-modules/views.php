@@ -20,8 +20,10 @@ class views  {
         return 'image/png';
       case 'jpg':
         return 'image/jpg';
-      default:
+      case 'html':
         return 'text/html';
+      default:
+        return 'application/octet-stream';
     }
   }
 
@@ -60,7 +62,10 @@ class views  {
 
 
   function buildUrl($dataEnv, $uri){
-    return $dataEnv->httpServer->host.':'.$dataEnv->httpServer->port.$uri;
+    if($dataEnv->dev){
+      return $dataEnv->httpServer->host.':'.$dataEnv->httpServer->port.$uri;
+    }
+    return $dataEnv->httpServer->prodHost.$uri;
   }
 
   function renderViews($dataRender, $dataEnv, $path, $initScript){
@@ -80,7 +85,7 @@ class views  {
               <meta charset='".$dataRender->charset."'>
               <!-- json-ld -->
               <title>".$viewData->title."</title>
-              <link rel='canonical' href=".$this->buildUrl($dataEnv, $viewData->uri)."'>
+              <link rel='canonical' href='".$this->buildUrl($dataEnv, $viewData->uri)."'>
               <link rel='icon' type='image/png' href='".$this->buildUrl($dataEnv, $viewData->favicon)."'>
               <meta name ='title' content='".$viewData->title."'>
               <meta name ='description' content='".$viewData->description."'>
