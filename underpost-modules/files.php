@@ -87,6 +87,22 @@ if(!class_exists('logger')){ include 'c:/dd/php-dev-http-server/underpost-module
 
 class files {
 
+  function recursiveCopyDirectory($src, $dst) { 
+    $dir = opendir($src); 
+    @mkdir($dst); 
+    while(false !== ( $file = readdir($dir)) ) { 
+        if (( $file != '.' ) && ( $file != '..' )) { 
+            if ( is_dir($src . '/' . $file) ) { 
+                $this->recursiveCopyDirectory($src . '/' . $file,$dst . '/' . $file); 
+            } 
+            else { 
+                copy($src . '/' . $file,$dst . '/' . $file); 
+            } 
+        } 
+    } 
+    closedir($dir); 
+  }
+
   function recursiveDeleteDirectory($dir) {
     if (is_dir($dir)) {
       $objects = scandir($dir);
