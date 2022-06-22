@@ -71,13 +71,7 @@ class views  {
   function renderViews($dataRender, $dataEnv, $path, $initScript){
     global $logger;
     foreach ($dataRender->views as $viewData) {
-      // echo "<br><br> renderViews test -> <br><br>";
-      // $viewData->uri = $dataRender->baseUri.$viewData->uri;
-      // echo "<br>".$viewData->uri."<br>".$path."<br> ---------- <br>";
       if($dataRender->baseUri.$viewData->uri === $path || ($dataRender->baseUri.$viewData->uri."/") === $path){
-
-        // iniciar session si no tiene libros cargar data en session por defecto
-        
 
         header('Content-Type: '.$this->buildMymeType().'; charset='.$dataRender->charset);
         $render = "
