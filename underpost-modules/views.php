@@ -71,7 +71,7 @@ class views  {
   function renderViews($dataRender, $dataEnv, $path, $initScript){
     global $logger;
     foreach ($dataRender->views as $viewData) {
-      if($dataRender->baseUri.$viewData->uri === $path || ($dataRender->baseUri.$viewData->uri."/") === $path){
+      if($dataRender->baseUri.$viewData->uri === $path){
 
         header('Content-Type: '.$this->buildMymeType().'; charset='.$dataRender->charset);
         $render = "
