@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-include './underpost-modules/logger.php';
-include './underpost-modules/views.php';
+include 'c:/dd/php-dev-http-server/underpost-modules/logger.php';
+include 'c:/dd/php-dev-http-server/underpost-modules/views.php';
 
 /*
 
@@ -12,8 +12,10 @@ include './underpost-modules/views.php';
 
 */
 
-$dataEnv = json_decode(file_get_contents('./data/env.json'));
-$dataRender = json_decode(file_get_contents('./data/render.json'));
+$pathApp = "c:/dd/deploy_area/palikos";
+
+$dataEnv = json_decode(file_get_contents($pathApp.'/data/env.json'));
+$dataRender = json_decode(file_get_contents($pathApp.'/data/render.json'));
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 date_default_timezone_set($dataEnv->timezone);
@@ -24,71 +26,32 @@ date_default_timezone_set($dataEnv->timezone);
 // https://www.php.net/manual/en/reserved.variables.php
 // get_class_methods()
 
+// $logger->mute();
+// php.init -> output_buffering = off
+
+if(!$dataEnv->dev){
+  $logger->mute();
+}
+
 $logger->color('white-green',' ON REQUEST -> '.$path);
 
-$initScript = function ($uriView){
+$initScript = function ($uriView, $dataRender){
         global $logger;
-        session_start();
-        if(!isset($_SESSION['books']) || $_SESSION['books']=="" ){
-          $_SESSION['books'] = file_get_contents('./data/books.json');
-          $logger->color("white-cyan", "GET ".$uriView." -> SET NEW SHOP DATA");
-        }
-
-        return "
-            <script>
-              var books = JSON.parse(`".$_SESSION['books']."`);
-              console.log('books ->');
-              console.log(books);
-            </script>
+        $logger->color('yellow',' initScript $uriView -> '.$uriView);
+        return " 
+          <script>
+          var baseUri = '".$dataRender->baseUri."';
+          </script>
         ";
 };
 
+// echo $path;
+
 switch ($path) {
-  case '/test':
+  case ($dataRender->baseUri."/hello/"):
     header('Content-Type: '.$views->buildMymeType().'; charset='.$dataRender->charset);
     echo 'Hello World';
     break;
-  case '/update-shop':
-    header('Content-Type: application/json; charset='.$dataRender->charset);
-    session_start();
-    if(isset($_SESSION['books'])){
-      $logger->color('white-cyan',' FETCH POST REQUEST -> '.$path);
-      $_SESSION['books'] = json_decode( file_get_contents( 'php://input' ), true );
-      exit('true');
-    }else{
-      $_SESSION['books'] = json_decode( file_get_contents( 'php://input' ), true );
-      $logger->color("white-cyan", "GET ".$path." -> SET NEW SHOP DATA");
-      exit('false');
-    }
-  case '/destroy-session':
-    header('Content-Type: application/json; charset='.$dataRender->charset);
-    $logger->color('white-cyan',' REST GET REQUEST -> '.$path);
-    session_start();
-    session_destroy();
-    exit('true');
-  case '/buy':
-    header('Content-Type: application/json; charset='.$dataRender->charset);
-    session_start();
-    if(isset($_SESSION['books'])){
-      $input = json_decode($_SESSION['books']);
-      $logger->color('white-cyan',' FETCH POST REQUEST -> '.$path);
-      $total = 0;
-      foreach ($input as $book) {
-        if($book->buy == true){
-          $total = $total + $book->amount;
-        }
-      }
-      if($total>0){
-        $logger->color('white-yellow',' COMPRA EXITOSA -> TOTAL $ CLP:'.$total);
-        session_destroy();
-        exit('true');
-      }else{
-        session_destroy();
-        exit('false');
-      }
-    }else{
-      exit('false');
-    }
   default:
     ( $dataEnv->dev ) ? $views->renderInfo($dataRender, $path) : null;
     $views->renderViews($dataRender, $dataEnv, $path, $initScript);
