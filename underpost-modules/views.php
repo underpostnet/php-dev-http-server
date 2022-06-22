@@ -61,17 +61,20 @@ class views  {
   }
 
 
-  function buildUrl($dataEnv, $uri){
+  function buildUrl($dataEnv, $dataRender, $uri){
     if($dataEnv->dev){
-      return $dataEnv->httpServer->host.':'.$dataEnv->httpServer->port.$uri;
+      return $dataEnv->httpServer->host.':'.$dataEnv->httpServer->port.$dataRender->baseUri.$uri;
     }
-    return $dataEnv->httpServer->prodHost.$uri;
+    return $dataEnv->httpServer->prodHost.$dataRender->baseUri.$uri;
   }
 
   function renderViews($dataRender, $dataEnv, $path, $initScript){
     global $logger;
     foreach ($dataRender->views as $viewData) {
-      if($viewData->uri === $path){
+      // echo "<br><br> renderViews test -> <br><br>";
+      // $viewData->uri = $dataRender->baseUri.$viewData->uri;
+      // echo "<br>".$viewData->uri."<br>".$path."<br> ---------- <br>";
+      if($dataRender->baseUri.$viewData->uri === $path || ($dataRender->baseUri.$viewData->uri."/") === $path){
 
         // iniciar session si no tiene libros cargar data en session por defecto
         
@@ -85,30 +88,30 @@ class views  {
               <meta charset='".$dataRender->charset."'>
               <!-- json-ld -->
               <title>".$viewData->title."</title>
-              <link rel='canonical' href='".$this->buildUrl($dataEnv, $viewData->uri)."'>
-              <link rel='icon' type='image/png' href='".$this->buildUrl($dataEnv, $viewData->favicon)."'>
+              <link rel='canonical' href='".$this->buildUrl($dataEnv, $dataRender, $viewData->uri)."'>
+              <link rel='icon' type='image/png' href='".$this->buildUrl($dataEnv, $dataRender, $viewData->favicon)."'>
               <meta name ='title' content='".$viewData->title."'>
               <meta name ='description' content='".$viewData->description."'>
               <meta name='author' content='".$dataEnv->author."'>
               <meta property='og:title' content='".$viewData->title."'>
               <meta property='og:description' content='".$viewData->description."'>
-              <meta property='og:image' content='".$this->buildUrl($dataEnv, $viewData->image)."'>
-              <meta property='og:url' content='".$this->buildUrl($dataEnv, $viewData->uri)."'>
+              <meta property='og:image' content='".$this->buildUrl($dataEnv, $dataRender, $viewData->image)."'>
+              <meta property='og:url' content='".$this->buildUrl($dataEnv, $dataRender, $viewData->uri)."'>
               <meta name='twitter:card' content='summary_large_image'>
               <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, user-scalable=0'>
               <meta name='viewport' content='width=device-width, user-scalable=no'>
               <!-- font awesome
-              <link rel='stylesheet' href='/underpost-library/css/all.min.css'>
+              <link rel='stylesheet' href='".$dataRender->baseUri."/underpost-library/css/all.min.css'>
               -->
-              <link rel='stylesheet' href='/underpost-library/style/simple.css'>
-              <link rel='stylesheet' href='/underpost-library/style/place-bar-select.css'>
+              <link rel='stylesheet' href='".$dataRender->baseUri."/underpost-library/style/simple.css'>
+              <link rel='stylesheet' href='".$dataRender->baseUri."/underpost-library/style/place-bar-select.css'>
               <!--
-              <link rel='stylesheet' href='/underpost-library/fonts.css'>
+              <link rel='stylesheet' href='".$dataRender->baseUri."/underpost-library/fonts.css'>
               -->
-              <script src='/underpost-library/util.js'></script>
-              <script src='/underpost-library/vanilla.js'></script>
-              ".$initScript($viewData->uri)."
-              <script type='module' src='/views/".$viewData->render."'></script>
+              <script src='".$dataRender->baseUri."/underpost-library/util.js'></script>
+              <script src='".$dataRender->baseUri."/underpost-library/vanilla.js'></script>
+              ".$initScript($viewData->uri, $dataRender)."
+              <script type='module' src='".$dataRender->baseUri."/views/".$viewData->render."'></script>
           </head>
           <body>
             <div style='display: none;'>
