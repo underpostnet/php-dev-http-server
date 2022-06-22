@@ -31,6 +31,8 @@ date_default_timezone_set($dataEnv->timezone);
 
 if(!$dataEnv->dev){
   $logger->mute();
+}else{
+  $dataRender->baseUri = "";
 }
 
 $logger->color('white-green',' ON REQUEST -> '.$path);
