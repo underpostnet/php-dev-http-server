@@ -68,6 +68,21 @@ class views  {
     return $dataEnv->httpServer->prodHost.$dataRender->baseUri.$uri;
   }
 
+  function renderFonts($dataRender){
+    $render = "<style>";
+    foreach ($dataRender->fonts as $fontData) {
+      $render = $render."
+        @font-face {      
+          font-family: '".$fontData->name."';      
+          src: URL('".$dataRender->baseUri.$fontData->url."') 
+          format('".$fontData->type."');     
+        } 
+      ";
+    }
+    return $render."
+     </style>";
+  }
+
   function renderViews($dataRender, $dataEnv, $path, $initScript){
     global $logger;
     foreach ($dataRender->views as $viewData) {
@@ -102,6 +117,7 @@ class views  {
               <!--
               <link rel='stylesheet' href='".$dataRender->baseUri."/underpost-library/fonts.css'>
               -->
+              ".$this->renderFonts($dataRender)."
               <script src='".$dataRender->baseUri."/underpost-library/util.js'></script>
               <script src='".$dataRender->baseUri."/underpost-library/vanilla.js'></script>
               ".$initScript($viewData->uri, $dataRender)."
