@@ -1,0 +1,7 @@
+{
+    "Host":"smtp.example.com",
+    "Username":"name@example.store",
+    "Password":"test",
+    "From":"name@example.store",
+    "FromName":"example.store"
+}

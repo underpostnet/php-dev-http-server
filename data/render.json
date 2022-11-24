@@ -1,0 +1,68 @@
+{
+   "charset":"utf-8",
+   "buildFolder": "c:/www/cloud/palikos",
+   "buildProdFolder": "c:/www/online/palikosfitness",
+   "baseUri": "/cloud/palikos",
+   "spinner": "ellipsis",
+   "fonts":[
+      {
+         "name":"sparta",
+         "url":"/assets/fonts/NCAA_Michigan_St_Spartans.otf",
+         "type":"opentype"
+      },
+      {
+         "name":"squada",
+         "url":"/assets/fonts/SquadaOne-Regular.ttf",
+         "type":"truetype"
+      }
+   ],
+   "statics":[
+      "./underpost-library",
+      "./views",
+      "./assets"
+   ],
+   "ignore": [
+      "./underpost-library/.git",
+      "./assets/draft"
+   ],
+   "api": [
+      "/hello",
+      "/payku"
+   ],
+   "views":[
+      {
+         "lang":"es",
+         "dir":"ltr",
+         "uri":"/",
+         "title":"Palikos Fitness - Tienda de Equipo y Suplementos Deportivos",
+         "description":"Palikos Fitness Online | Tu tienda para comprar equipo de entrenamiento y suplementos deportivos. Planes Entrenamiento Deportivo y Nutricional",
+         "image":"/assets/social.jpg",
+         "favicon":"/assets/favicon.png",
+         "render": "index.js"
+      },
+      {
+         "lang":"es",
+         "dir":"ltr",
+         "uri":"/tienda",
+         "title":"Tienda - Palikos Fitness - Tienda de Equipo y Suplementos Deportivos",
+         "description":"Tienda | Palikos Fitness Online | Tu tienda para comprar equipo de entrenamiento y suplementos deportivos. Planes Entrenamiento Deportivo y Nutricional",
+         "image":"/assets/social.jpg",
+         "favicon":"/assets/favicon.png",
+         "render": "index.js",
+         "paths": {
+            "data": "/data/shop-items.json",
+            "type": "shop"
+         }
+      },
+      {
+         "lang":"es",
+         "dir":"ltr",
+         "uri":"/contacto",
+         "title":"Contacto - Palikos Fitness - Tienda de Equipo y Suplementos Deportivos",
+         "description":"Contacto | Palikos Fitness Online | Tu tienda para comprar equipo de entrenamiento y suplementos deportivos. Planes Entrenamiento Deportivo y Nutricional",
+         "image":"/assets/social.jpg",
+         "favicon":"/assets/favicon.png",
+         "render": "index.js"
+      }
+   ]
+}
